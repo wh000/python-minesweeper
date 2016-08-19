@@ -112,18 +112,7 @@ def mineplacer(n, w, h):
             lst.append((j[0]+1, j[1] + i))
     return mines
 
-def plus(mines):
-    
-    lst = []
-    for j in mines:
-        for i in range(-1,2):
-            lst.append((j[0]-1,j[1] + i))
-            lst.append((j[0], j[1] + i))
-            lst.append((j[0]+1, j[1] + i))
-    filt = []
-    for i in itertools.ifilterfalse(filt.__contains__, lst):
-        filt.append(i)
-    return filt
+
 
 def isVisible(rc, mines):
     vis = False
@@ -131,7 +120,7 @@ def isVisible(rc, mines):
         vis = True
     return vis
             
-def minechecker(rc, mines, minesplus,board,d):
+def minechecker(rc, mines, board,d):
     dic = {}
     if board[rc[0]][rc[1]] == '- ':
         if rc not in d:
@@ -150,11 +139,11 @@ def minechecker(rc, mines, minesplus,board,d):
     if len(dic) >0 and dic[rc] == 0:
         for i in range(-1,2):
             if (rc[0]-1, rc[1] + i) not in dic:
-                minechecker((rc[0]-1, rc[1] + i), mines,minesplus,board,d)
+                minechecker((rc[0]-1, rc[1] + i), mines,board,d)
             if (rc[0], rc[1] + i) not in dic:
-                minechecker((rc[0], rc[1] + i), mines,minesplus,board,d)
+                minechecker((rc[0], rc[1] + i), mines,board,d)
             if (rc[0]+1, rc[1] + i) not in dic:
-                minechecker((rc[0]+1, rc[1] + i), mines,minesplus,board,d)          
+                minechecker((rc[0]+1, rc[1] + i), mines,board,d)          
                 
 
 def boardreveal(board, dic):
@@ -207,10 +196,11 @@ def minesweeper(level):
         w = 30
         h = 16
         n = 99
+
+        
     numOfmines = n  
     mines = mineplacer(n, w, h)
     turn = 1
-    minesplus = plus(mines)
     print_board(board)
 
     while turn >0:
@@ -278,7 +268,7 @@ def minesweeper(level):
                         break
                     else:
                         
-                        minechecker(rc, mines, minesplus, board,d)
+                        minechecker(rc, mines, board,d)
                                                                                 
                         board = boardreveal(board, d)
                         
